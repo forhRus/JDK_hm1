@@ -11,6 +11,11 @@ public class ServerWindow extends JFrame {
     private  final String TITLE = "Chat server";
     private  final String BTN_START = "Start";
     private  final String BTN_STOP = "Stop";
+    private  final String SERVER_STARTED = "Server started";
+    private  final String SERVER_STOPPED = "Server stopped";
+    private  final String SERVER_ISRUNNING = "Server is already running";
+
+    private boolean serverState;
     JTextArea textArea;
     StringBuilder sbTextArea;
 
@@ -22,6 +27,7 @@ public class ServerWindow extends JFrame {
         setSize(WINDOW_WIDTH, WINDOW_HEIGHT); // размер окна
         setTitle(TITLE); // Заголовок окна
         setResizable(false); //Запретить менять размеры окна
+        serverState = false;
 
         textArea = new JTextArea();
         textArea.setEditable(false); //запретить редактировать с клавиатуры
@@ -39,14 +45,27 @@ public class ServerWindow extends JFrame {
         btnStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                textArea.append("append");
+                if(serverState){
+                    textArea.append(SERVER_ISRUNNING);
+                } else{
+                    serverState = true;
+                    textArea.append(SERVER_STARTED);
+                }
+
             }
         });
         JButton btnStop = new JButton(BTN_STOP);
+        btnStop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(serverState){
+                    serverState = false;
+                    textArea.append(SERVER_STOPPED);
+                }
+            }
+        });
         panel.add(btnStart);
         panel.add(btnStop);
         return panel;
     }
-
-
 }
